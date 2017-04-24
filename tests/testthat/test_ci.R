@@ -10,8 +10,12 @@ test_that("CI yml generation works", {
                 push_to_remotes = list("github" = "https://${GITHUB_USERNAME}:${GITHUB_PASSWORD}@github.com/jirkalewandowski/gitlabr.git",
                                        "gitlab_com" = "https://${GITLAB_COM_USERNAME}:${GITLAB_COM_PASSWORD}@gitlab.com/jirkalewandowski/gitlabr.git"))
   
+  gitlab_ci_yml_reference <- c("../../.gitlab-ci.yml", "../.gitlab-ci.yml", ".gitlab-ci.yml") %>%
+    subset(., sapply(., file.exists)) %>%
+    extract(1)
+  
   expect_equal(yaml::yaml.load_file(".gitlab-ci.yml.test"),
-               yaml::yaml.load_file("../../.gitlab-ci.yml"))
+               yaml::yaml.load_file(gitlab_ci_yml_reference))
   
   on.exit(unlink(".gitlab-ci.yml.test"))
   
