@@ -3,8 +3,11 @@
 language: R
 sudo: false
 cache: packages
+r_github_packages:
+  - jimhester/covr
 before_script:
   - R --vanilla -e 'library(devtools);  devtools::document(); devtools::document()'
   - R --vanilla -e 'library(devtools); library(testthat); devtools::test(reporter
     = StopReporter)'
-
+after_success:
+  - Rscript -e 'covr::codecov()'
